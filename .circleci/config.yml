@@ -241,7 +241,7 @@ jobs:
             npm run migrations
       - run:
           name: Send result to text file
-          command:
+          command: |
             if [ $? -eq 0 ]
             then
               echo "Migration has been executed successfully. " > migrations_dump.txt
