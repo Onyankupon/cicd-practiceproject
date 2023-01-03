@@ -234,11 +234,19 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Run migrations
+          name: Run migrations and send to file
           command: |
             cd backend
             npm install
-            npm run migrations > migrations_dump.txt
+            npm run migrations
+            if [ $? eq 0 ]
+            then
+              echo "Success: Migration has been executed successfully. " > migrations_dump.txt
+              exit 0
+            else
+              echo "Failure: You failed this time. "
+              exit 1
+            fi
       - run:
           name: Send migration results to memstash
           command: |
