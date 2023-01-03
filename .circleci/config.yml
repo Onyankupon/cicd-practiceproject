@@ -38,7 +38,7 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl --insecure "https://kvdb.io/3cHdLQSh9oZzLpwx1aKQgN/migration_<<parameters.workflow_id>>")
+            SUCCESS=$(curl --insecure "https://kvdb.io/GT8rEnMsDiFpRFiS4j41FV/migration_<<parameters.workflow_id>>")
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -240,23 +240,23 @@ jobs:
             npm install
             npm run migrations
       - run:
-          name: Send result to text file
+          name: Send result to text file and kvdb
           command: |
             if [ $? -eq 0 ]
             then
-              echo "Migration has been executed successfully. " > migrations_dump.txt
+              echo "Migration has been executed successfully. " > migrations_dump.txt && curl --insecure https://kvdb.io/GT8rEnMsDiFpRFiS4j41FV/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
             else
-              echo "You failed this time. " && exit 1
+              echo "You failed this time. " && exit 1 && curl --insecure https://kvdb.io/GT8rEnMsDiFpRFiS4j41FV/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '0'
             fi
-      - run:
-          name: Send migration results to memstash
-          command: |
-            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
-            then
-              curl --insecure https://kvdb.io/3cHdLQSh9oZzLpwx1aKQgN/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
-            else
-              curl --insecure https://kvdb.io/3cHdLQSh9oZzLpwx1aKQgN/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '0'
-            fi
+      # - run:
+      #     name: Send migration results to memstash
+      #     command: |
+      #       if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+      #       then
+      #         curl --insecure https://kvdb.io/3cHdLQSh9oZzLpwx1aKQgN/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+      #       else
+      #         curl --insecure https://kvdb.io/3cHdLQSh9oZzLpwx1aKQgN/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '0'
+      #       fi
       - destroy-environment
       - revert-migrations      
 
