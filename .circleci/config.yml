@@ -38,7 +38,7 @@ commands:
           when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl --insecure "https://kvdb.io/Jj8L5xKsmKwMcUG5xWoVUg/migration_<<parameters.workflow_id>>")
+            SUCCESS=$(curl --insecure "https://kvdb.io/B4b6bJX1hYVkti9f6QMZtF/migration_<<parameters.workflow_id>>")
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -242,9 +242,11 @@ jobs:
       - run:
           name: Send migration results to memstash
           command: |
-            if grep -q "has been executed successfully." ~/project/backend/migration_dump.txt
+            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl --insecure https://kvdb.io/Jj8L5xKsmKwMcUG5xWoVUg/migration_${CIRCLE_WORKFLOW_ID:0:7} -D '1'
+              curl --insecure https://kvdb.io/B4b6bJX1hYVkti9f6QMZtF/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '1'
+            else
+              curl --insecure https://kvdb.io/B4b6bJX1hYVkti9f6QMZtF/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '0'
             fi
       - destroy-environment
       - revert-migrations      
