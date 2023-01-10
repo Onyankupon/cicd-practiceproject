@@ -29,15 +29,6 @@ commands:
           command: |
             sudo apt-get update
             sudo apt-get install awscli
-  
-  install_nodejs_new:
-    description: Install Node-js 14
-    steps:
-      - run:
-          name: Install Node-js 14
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -
-            sudo apt install -y nodejs
 
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
@@ -145,12 +136,9 @@ jobs:
             
   scan-frontend:
     docker:
-      # Docker image here
       - image: circleci/node:13.8.0
     steps:
-      # Checkout code from git
       - checkout
-      # Restore from cache
       - restore_cache:
           keys: [frontend-scan]
       - run:
@@ -165,12 +153,9 @@ jobs:
 
   scan-backend:
     docker:
-      # Docker image here
       - image: circleci/node:13.8.0
     steps:
-      # Checkout code from git
       - checkout
-      # Restore from cache
       - restore_cache:
           keys: [backend-scan]
       - run:
@@ -221,18 +206,11 @@ jobs:
               --filters "Name=instance-state-name,Values=running" \
               --output text >> inventory.txt
             cat inventory.txt
-            #   export BACKEND_IP=$(aws ec2 describe-instances \
-            #   --query 'Reservations[*].Instances[*].publicIpAddress' \
-            #   --output text --filter Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7} \
-            #   --output text
-            #   )
-            # echo ${BACKEND_IP}
       - persist_to_workspace:
           root: ~/
           paths:
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment
-      # Here's where you will add some code to rollback on failure      
+      - destroy-environment      
 
   configure-infrastructure:
     docker:
@@ -255,8 +233,7 @@ jobs:
             cat inventory.txt
 
             ansible-playbook -i inventory.txt configure-server.yml
-      - destroy-environment
-      # Here's where you will add some code to rollback on failure      
+      - destroy-environment     
 
   run-migrations:
     docker:
@@ -278,6 +255,7 @@ jobs:
             else
               echo "You failed this time. " && exit 1 && curl --insecure https://kvdb.io/GT8rEnMsDiFpRFiS4j41FV/migration_${CIRCLE_WORKFLOW_ID:0:7} -d '0'
             fi
+            cat migrations_dump.txt
       - destroy-environment
       - revert-migrations      
 
@@ -319,8 +297,7 @@ jobs:
             npm run build
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       - destroy-environment
-      - revert-migrations
-  #     # Here's where you will add some code to rollback on failure      
+      - revert-migrations      
                     
   deploy-backend:
     docker:
@@ -353,8 +330,7 @@ jobs:
             ansible-playbook -i inventory.txt deploy-backend.yml
 
       - destroy-environment
-      - revert-migrations
-      # Here's where you will add some code to rollback on failure  
+      - revert-migrations 
 
   smoke-test:
     docker:
@@ -417,8 +393,7 @@ jobs:
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --stack-name InitialStack
       - destroy-environment
-      - revert-migrations
-      # Here's where you will add some code to rollback on failure  
+      - revert-migrations 
 
   cleanup:
     docker:
@@ -429,7 +404,7 @@ jobs:
       - run:
           name: Get old stack workflow id
           command: |
-            export STACKS=($(aws cloud formation list-stack \
+            export STACKS=($(aws cloudformation list-stack \
                 --query "StackSummaries[*].StackName" \
                 --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
             echo Stack names: "${STACKS[@]}"
