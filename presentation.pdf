@@ -1,0 +1,28 @@
+Fundamentals and Benefits of using CI/CD to Achieve, Build, and Deploy Automation for Cloud-Based Software Products.
+
+CI/CD, or Continuous integration and Continuous delivery/deployment, is a set of practices and tools that enable developers to build, test, and deploy software applications more frequently and with higher quality. The fundamental idea behind CI/CD is to automate the process of software development, from code integration to deployment, to reduce the risk of errors, improve collaboration among team members, and speed up time to market.
+
+
+The fundamentals of CI/CD include the following:
+
+* Continuous integration: This practice involves continuously integrating code changes from multiple developers into a shared code repository. By regularly incorporating code changes, developers can detect and resolve conflicts early before they become significant issues.
+
+* Continuous testing: This practice involves automatically testing the integrated code changes to ensure that they do not break the existing functionality. By automating testing, developers can catch and fix errors early, before they reach production.
+
+* Continuous delivery/deployment: This practice involves automatically delivering or deploying code changes to various environments, such as staging or production after they have passed testing. By automating delivery/deployment, developers can reduce the risk of errors and speed up time to market.
+ 
+
+The benefits of CI/CD to achieve, build, and deploy automation for cloud-based software products include:
+
+* Faster time to market: By automating the software development process, CI/CD enables developers to quickly and frequently deliver new features and bug fixes to customers. 
+
+* Improved software quality: By automating testing and deployment, CI/CD helps to reduce the risk of errors and improve the overall quality of the software. 
+
+* Increased collaboration: By continuously integrating and testing code changes, CI/CD facilitates collaboration among developers and helps to ensure that everyone is working with the latest version of the code. 
+
+* Better scalability: CI/CD practices allow teams to build and deploy large and complex software products for cloud-based systems with ease and scale them according to the need. 
+
+* Cost savings: CI/CD practices can reduce the cost associated with manual testing and deployment and help minimise downtime and production errors. 
+
+Overall, CI/CD is a set of practices and tools that enable developers to build, test, and deploy software applications more frequently and with higher quality; this is particularly beneficial for cloud-based software products as it can help to improve collaboration, scalability, and reduce costs.
+

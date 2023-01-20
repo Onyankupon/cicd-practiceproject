@@ -1,6 +1,7 @@
 version: 2.1
 
 commands:
+# This command is for installing NodeJs 13
   install_nodejs:
     description: Install Node-js 13
     steps:
@@ -10,6 +11,7 @@ commands:
             curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E bash -
             sudo apt install -y nodejs
 
+# This command is for installing Ansible
   install_ansible:
     description: Install Ansible
     steps:
@@ -21,6 +23,7 @@ commands:
             sudo apt-add-repository --yes --update ppa:ansible/ansible
             sudo apt install ansible -y
 
+# This command is for installing AWSCLI
   install_awscli:
     description: Install Aws cli
     steps:
@@ -30,6 +33,7 @@ commands:
             sudo apt-get update
             sudo apt-get install awscli
 
+# This command is for destroying created environment (cloudformation stack)
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -45,6 +49,7 @@ commands:
             aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.workflow_id>>"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.workflow_id>>"
 
+# This command is for reverting last Migration on job fails
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -66,6 +71,7 @@ commands:
             fi
             
 jobs:
+# 1. Build Phase
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -100,6 +106,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
+# 2. Test Phase
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -133,7 +140,8 @@ jobs:
       - save_cache:
           paths: [backend/node_modules]
           key: backend-test
-            
+  
+  # 3. Analyze Phase
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -168,6 +176,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-scan
 
+# 4. Infrastructure Phase
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -259,6 +268,7 @@ jobs:
       - destroy-environment
       - revert-migrations      
 
+# 5. Deploy Phase
   deploy-frontend:
     docker:
       - image: cimg/base:stable
@@ -332,6 +342,7 @@ jobs:
       - destroy-environment
       - revert-migrations 
 
+# 6. Smoke test Phase
   smoke-test:
     docker:
       - image: cimg/base:stable 
@@ -369,9 +380,9 @@ jobs:
               exit 1
             fi
       - destroy-environment
-      - revert-migrations
-#       # Here's where you will add some code to rollback on failure  
+      - revert-migrations  
 
+# 7. Promotion Phase
   cloudfront-update:
     docker:
       - image: amazon/aws-cli
@@ -423,7 +434,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-frontend-"${OldWorkflowID}"
             fi
             
-
+# Step-by-step flow of jobs
 workflows:
   default:
     jobs:
