@@ -71,7 +71,8 @@ commands:
             fi
             
 jobs:
-# Pre-build phase
+# Pre-build phase: was supposed to be run manually but wanted to try automating this process.
+# had an S3 already created with bucketname: udapeople-1234321
   deploy-initialstack:
     docker:
       - image: amazon/aws-cli
@@ -86,7 +87,7 @@ jobs:
               --stack-name InitialStack \
               --parameter-overrides WorkflowID=udapeople-1234321
 
-# 1. Build Phase
+# Build Phase
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -121,7 +122,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-build
 
-# 2. Test Phase
+# Test Phase
   test-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -156,7 +157,7 @@ jobs:
           paths: [backend/node_modules]
           key: backend-test
   
-  # 3. Analyze Phase
+# Analyze Phase
   scan-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -191,7 +192,8 @@ jobs:
           paths: [backend/node_modules]
           key: backend-scan
 
-# 4. Infrastructure Phase
+# Infrastructure Phase
+# Created a key pair: udacity and used in the backend.yml file
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -259,6 +261,7 @@ jobs:
             ansible-playbook -i inventory.txt configure-server.yml
       - destroy-environment     
 
+# Migration phase
   run-migrations:
     docker:
       - image: circleci/node:13.8.0
@@ -283,7 +286,7 @@ jobs:
       - destroy-environment
       - revert-migrations      
 
-# 5. Deploy Phase
+# Deploy Phase
   deploy-frontend:
     docker:
       - image: cimg/base:stable
@@ -357,7 +360,7 @@ jobs:
       - destroy-environment
       - revert-migrations 
 
-# 6. Smoke test Phase
+# Smoke test Phase
   smoke-test:
     docker:
       - image: cimg/base:stable 
@@ -397,7 +400,7 @@ jobs:
       - destroy-environment
       - revert-migrations  
 
-# 7. Promotion Phase
+# Promotion Phase
   cloudfront-update:
     docker:
       - image: amazon/aws-cli
@@ -420,7 +423,7 @@ jobs:
             --stack-name InitialStack
       - destroy-environment
       - revert-migrations 
-
+# Clean up old Workflow
   cleanup:
     docker:
       - image: cimg/base:stable
@@ -428,19 +431,18 @@ jobs:
       - checkout
       - install_awscli
       - run:
-          name: Get old stack workflow id
+          name: Get old stack workflow id and Remove old stacks and files
           command: |
+            export OLD_WORKFLOW_ID=(aws cloudformation \
+            list-exports --query "Exports[?Name==\'WorkflowID\'].Value" \
+            --no-paginate --output text)
+
             export STACKS=($(aws cloudformation list-stack \
                 --query "StackSummaries[*].StackName" \
                 --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
+
             echo Stack names: "${STACKS[@]}"
-            export OldWorkflowID=$(curl --insecure https://kvdb.io/GT8rEnMsDiFpRFiS4j41FV/old_workflow_id)
-            echo Old Workflow ID: $OldWorkflowID
-      - run:
-          name: Remove old stacks and files
-          command: |
-            export OldWorkflowID=$(curl --insecure https://kvdb.io/GT8rEnMsDiFpRFiS4j41FV/old_workflow_id)
-            echo Old Workflow ID: $OldWorkflowID
+            echo Old Workflow ID: ${OldWorkflowID}
 
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
