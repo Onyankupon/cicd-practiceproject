@@ -71,22 +71,6 @@ commands:
             fi
             
 jobs:
-# Pre-build phase: was supposed to be run manually but wanted to try automating this process.
-# had an S3 already created with bucketname: udapeople-1234321
-  deploy-initialstack:
-    docker:
-      - image: amazon/aws-cli
-    steps: 
-      - checkout
-      - run: 
-          name: InitialStack (cloudfront)
-          command: |
-            cd .circleci/files \
-            aws cloudformation deploy \
-              --template-file cloudfront.yml \
-              --stack-name InitialStack \
-              --parameter-overrides WorkflowID=udapeople-1234321
-
 # Build Phase
   build-frontend:
     docker:
@@ -455,11 +439,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - deploy-initialstack
-      - build-frontend:
-          requires: [deploy-initialstack]
-      - build-backend:
-          requires: [deploy-initialstack]
+      - build-frontend
+      - build-backend
       - test-frontend:
           requires: [build-frontend]
       - test-backend:
