@@ -1,6 +1,6 @@
 # Automating the deployment of react app to AWS with monitoring and logging
 *Repository forked from [Udacity](https://github.com/udacity/cdond-c3-projectstarter).*
-*This project's objective was for learning purpose*
+*This project's objective was for learning purpose and [instructions](https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions) can be found*
 
 ## What was accomplished with this repository:
 1. Designed and configured CI/CD tool to automate change delivery of a React app.
@@ -11,11 +11,18 @@
 - CircleCI - CI/CD service
 - Amazon AWS - Cloud Services
 - AWS CLI - Command-line tool for AWS
-- CloudFormation - Infrastructure as cood tool
+- CloudFormation - Infrastructure as code tool
 - Ansible - Configuration management tool
 - Prometheus - Monitoring tool
 - Grafana - Visualizer for Prometheus
+- Terraform - Infrastructure as code tool (for building required infrastructure before task start)
 
-> With this project I learnt how to troubleshoot errors, make research and find solution.
+To try this project, fork [Udacity](https://github.com/udacity/cdond-c3-projectstarter) and follow [instructions](https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions) and check [screenshots](https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions/screenshots).
+You can also refer to my [repo](https://github.com/Onyankupon/cicd-practiceproject) for reference.
 
-To try this project, fork [Udacity](https://github.com/udacity/cdond-c3-projectstarter) and follow [instructions](instructions/README.md) using this repository as reference
+## Prerequisites:
+- CircleCI account already set up. If not then *[signup]*(https://circleci.com/signup/).
+- AWS account with:
+    - Running database
+    - An S3 bucket
+    **Note**: If you don't have this set up use *[Pre-task]*(pre-task/) where you can see Terraform files for quick temporary deployment and easy teardown. [instructions](https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions) is to do it manually but its easier to tear down later with Terraform.

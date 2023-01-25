@@ -389,6 +389,7 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
+      - install_nodejs
       - run:
           name: Install dependencies & export old workflow ID to kvdb
           command: |
@@ -414,6 +415,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
+      - install_nodejs
       - run:
           name: Get old stack workflow id
           command: |
@@ -435,6 +437,8 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-backend-"${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-frontend-"${OldWorkflowID}"
             fi
+      - destroy-environment
+      - revert-migrations
             
 # Step-by-step flow of jobs
 workflows:
