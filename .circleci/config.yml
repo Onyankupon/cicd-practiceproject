@@ -389,7 +389,6 @@ jobs:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - install_nodejs
       - run:
           name: Install dependencies & export old workflow ID to kvdb
           command: |
@@ -406,7 +405,6 @@ jobs:
             --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
             --stack-name InitialStack
       - destroy-environment
-      - revert-migrations 
 
 # Clean up old workflow
   cleanup:
