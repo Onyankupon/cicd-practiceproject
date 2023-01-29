@@ -413,6 +413,7 @@ jobs:
     steps:
       - checkout
       - install_awscli
+      - install_nodejs
       - run:
           name: Get old stack workflow id
           command: |
@@ -435,6 +436,7 @@ jobs:
               aws cloudformation delete-stack --stack-name "udapeople-frontend-"${OldWorkflowID}"
             fi
       - destroy-environment
+      - revert-migrations
             
 # Step-by-step flow of jobs
 workflows:
