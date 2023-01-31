@@ -35,10 +35,14 @@ scrape_configs:
   - job_name: 'node_exporter'
     ec2_sd_configs:
       - region: us-east-1
-        access_key: AKIAT4DYF6O3T3A5YTVY
-        secret_key: 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
+        access_key: #access-key
+        secret_key: #secret-key
         port: 9100" > /etc/prometheus/prometheus.yml
-
+# Access key and Secret key should originate from;
+# configured IAM User with programmatic access and "AmazonEC2ReadOnlyAccess" permission.
+#               or
+# configure role with "AmazonEC2ReadOnlyAccess" and attach role (advised for production environment).
+# but since it only temporary setup, IAM User with programmatic access and "AmazonEC2ReadOnlyAccess" permission was used.
 sudo touch /etc/systemd/system/prometheus.service
 sudo chmod 777 /etc/systemd/system/prometheus.service
 sudo echo "[Unit]
@@ -87,12 +91,12 @@ echo "route:
 receivers:
 - name: email-me
   email_configs:
-  - to: olapadew30@gmail.com
-    from: boluw9tife@gmail.com
+  - to: #to-email@gmail.com
+    from: #from-email@gmail.com
     smarthost: smtp.gmail.com:587
-    auth_username: boluw9tife@gmail.com
-    auth_identity: boluw9tife@gmail.com
-    auth_password: emmywizzi" > /etc/prometheus/alertmanager.yml
+    auth_username: #from-email@gmail.com
+    auth_identity: #from-email@gmail.com
+    auth_password: #email-password" > /etc/prometheus/alertmanager.yml
 
 sudo touch /etc/systemd/system/alertmanager.service
 sudo chmod 777 /etc/systemd/system/alertmanager.service
