@@ -18,22 +18,22 @@
 - Grafana - Visualizer for Prometheus
 - Terraform - Infrastructure as code tool
 
-To try this project, fork *[Udacity]*(https://github.com/udacity/cdond-c3-projectstarter) and follow *[instructions]*(https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions) and check *[screenshots]*(https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions/screenshots).
-You can also use my *[repo]*(https://github.com/Onyankupon/cicd-practiceproject) for reference.
+To try this project, fork *[Udacity](https://github.com/udacity/cdond-c3-projectstarter)* and follow *[instructions](https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions)* and check *[screenshots](https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions/screenshots).*
+You can also use my *[repo](https://github.com/Onyankupon/cicd-practiceproject)* for reference.
 
 ## Prerequisites:
-- CircleCI account already set up. If not then *[signup]*(https://circleci.com/signup/).
+- CircleCI account already set up. If not then *[signup](https://circleci.com/signup/).*
 - AWS account with:
     - Running database - required for setting up Project Environment Variables to allow access during runtime.
     - An S3 bucket.
-    - Active Cloudfront distribution: setting this up before running config on CircleCI reduces setup-time for the cloudfront. *[InitialStack]*(https://github.com/Onyankupon/cicd-practiceproject/tree/master/pre-task/initial-stack.txt)
+    - Active Cloudfront distribution: setting this up before running config on CircleCI reduces setup-time for the cloudfront. *[InitialStack](https://github.com/Onyankupon/cicd-practiceproject/tree/master/pre-task/initial-stack.txt)*
 
-#### Note: If you don't have this set up use *[Pre-task]*(https://github.com/Onyankupon/cicd-practiceproject/tree/master/pre-task) where you can see Terraform files for a quick temporary deployment and easy teardown.
+#### Note: If you don't have this set up use *[Pre-task](https://github.com/Onyankupon/cicd-practiceproject/tree/master/pre-task)* where you can see Terraform files for a quick temporary deployment and easy teardown.
 
 ## Steps
-Follow the *[Instruction]*(https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions) on the original Repo.
+Follow the *[Instruction](https://github.com/udacity/cdond-c3-projectstarter/tree/master/instructions)* on the original Repo.
 
-[Config.yml](https://github.com/Onyankupon/cicd-practiceproject/blob/master/.circleci/config.yml) already populated save for some careful edits needed.
+**[Config.yml](https://github.com/Onyankupon/cicd-practiceproject/blob/master/.circleci/config.yml)** already populated save for some careful edits needed.
 
 ### Since the backend and frontend were already provided (with errors), I only configured the config.yml file to make automation possible and configured for monitoring and logging. I also made sure that it became easy to spin up and pull down infrastructures by utilising Terraform and CloudFormation as Infrastructure as code tool.
 
